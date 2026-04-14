@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استبيان نهاية العام 🎓</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --card: #1a1830;
+    --card2: #221f3a;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --text: #fffffe;
+    --muted: #a7a9be;
+    --border: rgba(255,255,255,0.08);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(77,150,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(199,125,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 10%, rgba(255,107,107,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* Progress */
+  .progress-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,14,23,0.92);
+    backdrop-filter: blur(12px);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    margin: 0 -16px 30px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent4), var(--accent5));
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 40px 20px 30px;
+    margin-bottom: 30px;
+  }
+  .hero-emoji { font-size: 64px; display: block; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent2), var(--accent1), var(--accent5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,217,61,0.12);
+    border: 1px solid rgba(255,217,61,0.3);
+    color: var(--accent2);
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 22px;
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-title h2 { font-size: 18px; font-weight: 700; }
+  .section-title p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* Question */
+  .question { margin-bottom: 28px; }
+  .question:last-child { margin-bottom: 0; }
+  .q-label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+  }
+  .q-num {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 1px 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Stars Rating */
+  .stars-wrap { display: flex; gap: 8px; flex-direction: row-reverse; justify-content: flex-end; }
+  .stars-wrap input { display: none; }
+  .stars-wrap label {
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+    filter: grayscale(1) opacity(0.4);
+  }
+  .stars-wrap input:checked ~ label,
+  .stars-wrap label:hover,
+  .stars-wrap label:hover ~ label {
+    filter: grayscale(0) opacity(1);
+    transform: scale(1.2);
+  }
+  .stars-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Radio options */
+  .options-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  .options-grid.two-col { grid-template-columns: 1fr 1fr; }
+  .opt-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .opt-label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .opt-label input { display: none; }
+  .opt-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .opt-text { position: relative; z-index: 1; line-height: 1.4; }
+  .opt-label:has(input:checked) {
+    border-color: var(--accent4);
+    background: rgba(77,150,255,0.12);
+  }
+  .opt-label:has(input:checked) .opt-dot {
+    background: var(--accent4);
+    border-color: var(--accent4);
+  }
+  .opt-label:has(input:checked) .opt-dot::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .opt-label:hover:not(:has(input:checked)) { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+  /* Fun options with emoji */
+  .fun-opt {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-size: 13px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .fun-opt input { display: none; }
+  .fun-opt .fun-emoji { font-size: 28px; }
+  .fun-opt:has(input:checked) { border-color: var(--accent2); background: rgba(255,217,61,0.1); color: var(--accent2); }
+  .fun-opt:hover:not(:has(input:checked)) { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    padding: 14px;
+    resize: vertical;
+    min-height: 90px;
+    transition: border-color 0.2s;
+    outline: none;
+    direction: rtl;
+  }
+  textarea:focus { border-color: var(--accent4); }
+  textarea::placeholder { color: var(--muted); }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(77,150,255,0.3); }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Thank you */
+  .thankyou {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .thankyou.show { display: block; }
+  .thankyou-emoji { font-size: 80px; animation: pop 0.5s ease; display: block; }
+  @keyframes pop { 0%{transform:scale(0)} 80%{transform:scale(1.1)} 100%{transform:scale(1)} }
+  .thankyou h2 { font-size: 32px; font-weight: 900; margin: 20px 0 12px; background: linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .thankyou p { color: var(--muted); font-size: 15px; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* Color accents per section */
+  .s1 .section-icon { background: rgba(77,150,255,0.15); }
+  .s2 .section-icon { background: rgba(107,203,119,0.15); }
+  .s3 .section-icon { background: rgba(255,107,107,0.15); }
+  .s4 .section-icon { background: rgba(255,217,61,0.15); }
+  .s5 .section-icon { background: rgba(199,125,255,0.15); }
+
+  @media(max-width:480px) {
+    .options-grid.two-col { grid-template-columns: 1fr; }
+    .section { padding: 20px 16px; }
+    .stars-wrap label { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <div class="progress-top">
+      <span>📋 استبيان نهاية العام</span>
+      <span id="progress-text">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-emoji">🎓</span>
+    <div class="badge">نهاية العام الدراسي</div>
+    <h1>استبيان الفوج — رأيك يهمّنا!</h1>
+    <p>هذا الاستبيان سرّي تمامًا 🔒 | خذ وقتك وكن صريحًا | لا توجد إجابات صحيحة أو خاطئة</p>
+  </div>
+
+  <form id="survey-form" action="https://formspree.io/f/xwvwvzwo" method="POST">
+
+    <!-- Section 1: Professors -->
+    <div class="section s1">
+      <div class="section-title">
+        <div class="section-icon">👨‍🏫</div>
+        <div>
+          <h2>الأساتذة وطرق التدريس</h2>
+          <p>قيّم ما مررت به هذا العام</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">1</span> ما مدى رضاك العام عن أساتذة هذه السنة؟</div>
+        <div class="stars-wrap" data-name="q1">
+          <input type="radio" name="q1" id="q1s5" value="5"><label for="q1s5">⭐</label>
+          <input type="radio" name="q1" id="q1s4" value="4"><label for="q1s4">⭐</label>
+          <input type="radio" name="q1" id="q1s3" value="3"><label for="q1s3">⭐</label>
+          <input type="radio" name="q1" id="q1s2" value="2"><label for="q1s2">⭐</label>
+          <input type="radio" name="q1" id="q1s1" value="1"><label for="q1s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">2</span> هل كانت طرق التدريس المستخدمة مناسبة وفعّالة؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q2" value="نعم تمامًا"><span class="opt-dot"></span><span class="opt-text">✅ نعم، كانت ممتازة ومتنوعة</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="أحيانًا"><span class="opt-dot"></span><span class="opt-text">🔄 أحيانًا، حسب الأستاذ</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="نادرًا"><span class="opt-dot"></span><span class="opt-text">😐 نادرًا، كانت تقليدية جدًا</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="لا إطلاقًا"><span class="opt-dot"></span><span class="opt-text">❌ لا، نحتاج تجديدًا كاملًا</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">3</span> من أكثر أستاذ أثّر فيك إيجابيًا هذا العام؟ (اختياري)</div>
+        <textarea name="q3" placeholder="اكتب اسمه أو لقبه إن أردت... 🏆"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 2: Atmosphere -->
+    <div class="section s2">
+      <div class="section-title">
+        <div class="section-icon">🤝</div>
+        <div>
+          <h2>الجو الدراسي والعلاقات</h2>
+          <p>العلاقات داخل الفوج والمحيط الجامعي</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">4</span> كيف تصف جو الفوج خلال هذا العام؟</div>
+        <div class="options-grid two-col">
+          <label class="opt-label"><input type="radio" name="q4" value="ودّي ومتعاون"><span class="opt-dot"></span><span class="opt-text">🤗 ودّي ومتعاون</span></label>
+          <label class="opt-label"><input type="radio" name="q4" value="عادي"><span class="opt-dot"></span><span class="opt-text">😶 عادي، لا بأس</span></label>
+          <label class="opt-label"><input type="radio" name="q4" value="متوتر أحيانًا"><span class="opt-dot"></span><span class="opt-text">😬 متوتر أحيانًا</span></label>
+          <label class="opt-label"><input type="radio" name="q4" value="صعب"><span class="opt-dot"></span><span class="opt-text">😤 صعب وكثير مشاكل</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">5</span> ما مدى رضاك عن ممثل الفوج هذا العام؟</div>
+        <div class="stars-wrap" data-name="q5">
+          <input type="radio" name="q5" id="q5s5" value="5"><label for="q5s5">⭐</label>
+          <input type="radio" name="q5" id="q5s4" value="4"><label for="q5s4">⭐</label>
+          <input type="radio" name="q5" id="q5s3" value="3"><label for="q5s3">⭐</label>
+          <input type="radio" name="q5" id="q5s2" value="2"><label for="q5s2">⭐</label>
+          <input type="radio" name="q5" id="q5s1" value="1"><label for="q5s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">6</span> ما الذي يفتقده ممثل الفوج؟ (اختياري)</div>
+        <textarea name="q6" placeholder="مثلاً: التواصل، الجدية، الحضور... 🗣️"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 3: Infrastructure -->
+    <div class="section s3">
+      <div class="section-title">
+        <div class="section-icon">🏛️</div>
+        <div>
+          <h2>البنية التحتية والإمكانيات</h2>
+          <p>المرافق، المكتبة، القاعات، الخدمات...</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">7</span> قيّم جودة القاعات والتجهيزات الدراسية</div>
+        <div class="stars-wrap" data-name="q7">
+          <input type="radio" name="q7" id="q7s5" value="5"><label for="q7s5">⭐</label>
+          <input type="radio" name="q7" id="q7s4" value="4"><label for="q7s4">⭐</label>
+          <input type="radio" name="q7" id="q7s3" value="3"><label for="q7s3">⭐</label>
+          <input type="radio" name="q7" id="q7s2" value="2"><label for="q7s2">⭐</label>
+          <input type="radio" name="q7" id="q7s1" value="1"><label for="q7s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">8</span> هل تتوفر الخدمات الأساسية بشكل مناسب؟ (WiFi، مكتبة، مطعم...)</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q8" value="نعم كل شيء جيد"><span class="opt-dot"></span><span class="opt-text">👍 نعم، كل شيء جيد</span></label>
+          <label class="opt-label"><input type="radio" name="q8" value="بعضها فقط"><span class="opt-dot"></span><span class="opt-text">⚖️ بعضها فقط</span></label>
+          <label class="opt-label"><input type="radio" name="q8" value="الأغلبية غير متوفرة"><span class="opt-dot"></span><span class="opt-text">⚠️ الأغلبية غير متوفرة</span></label>
+          <label class="opt-label"><input type="radio" name="q8" value="لا شيء يعمل"><span class="opt-dot"></span><span class="opt-text">💀 لا شيء يعمل كما يجب</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">9</span> ما أكبر مشكلة تتمنى حلّها السنة القادمة؟</div>
+        <textarea name="q9" placeholder="مكتبة، انقطاع الكهرباء، الإنترنت، النظافة... 🔧"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 4: Fun Questions -->
+    <div class="section s4">
+      <div class="section-title">
+        <div class="section-icon">🎉</div>
+        <div>
+          <h2>أسئلة ترفيهية 😄</h2>
+          <p>استرخِ وأجب بصدق تام!</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">10</span> 🔥 لو اضطررت للاختيار... ماذا تختار؟</div>
+        <div class="options-grid two-col">
+          <label class="fun-opt"><input type="radio" name="q10" value="مليون دولار"><span class="fun-emoji">💰</span>مليون دولار</label>
+          <label class="fun-opt"><input type="radio" name="q10" value="فوجك"><span class="fun-emoji">👨‍👩‍👧‍👦</span>فوجك وزملاؤك</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">11</span> 🌍 ما موقفك من التوترات الجيوسياسية الأخيرة في الشرق الأوسط؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q11" value="أتابع بشكل مستمر"><span class="opt-dot"></span><span class="opt-text">📺 أتابع الأخبار بشكل مستمر</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="أتابع أحيانًا"><span class="opt-dot"></span><span class="opt-text">📰 أتابع أحيانًا عند الأحداث الكبرى</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="لا أتابع"><span class="opt-dot"></span><span class="opt-text">🙈 لا أتابع، أخبار الدراسة تكفيني</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="لا رأي لي"><span class="opt-dot"></span><span class="opt-text">🤷 لا رأي لي في السياسة</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">12</span> 😂 ما أغرب موقف مررت به هذا العام في المدرسة؟</div>
+        <textarea name="q12" placeholder="انسى الرسمية واحكيلنا! 😄"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">13</span> 🎭 لو كنت مديرًا للمدرسة ليوم واحد، ماذا ستغيّر؟</div>
+        <textarea name="q13" placeholder="لا حدود للخيال! 🚀"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">14</span> 🏅 من يستحق لقب «شخصية العام» في الفوج؟ ولماذا؟</div>
+        <textarea name="q14" placeholder="اذكر الاسم والسبب إن أردت 😄"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 5: Final -->
+    <div class="section s5">
+      <div class="section-title">
+        <div class="section-icon">💬</div>
+        <div>
+          <h2>الكلمة الأخيرة</h2>
+          <p>رسالتك لزملائك ولإدارة المدرسة</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">15</span> كيف تقيّم هذا العام الدراسي بشكل عام؟</div>
+        <div class="stars-wrap" data-name="q15">
+          <input type="radio" name="q15" id="q15s5" value="5"><label for="q15s5">⭐</label>
+          <input type="radio" name="q15" id="q15s4" value="4"><label for="q15s4">⭐</label>
+          <input type="radio" name="q15" id="q15s3" value="3"><label for="q15s3">⭐</label>
+          <input type="radio" name="q15" id="q15s2" value="2"><label for="q15s2">⭐</label>
+          <input type="radio" name="q15" id="q15s1" value="1"><label for="q15s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>عام رائع 🌟</span><span>عام صعب 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">16</span> رسالة لزملائك في نهاية العام... ✍️</div>
+        <textarea name="q16" placeholder="قُلها من القلب 💙" style="min-height:110px"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">🚀 إرسال الاستبيان</button>
+  </form>
+
+  <!-- Thank You -->
+  <div class="thankyou" id="thankyou">
+    <span class="thankyou-emoji">🎊</span>
+    <h2>شكرًا جزيلًا!</h2>
+    <p>تمّ تسجيل إجاباتك بنجاح 🎉<br>رأيك يساهم في تطوير بيئتنا الدراسية<br><br>نتمنى لك صيفًا جميلًا وعطلة مريحة ☀️</p>
+  </div>
+
+</div>
+
+<script>
+  // Progress tracking
+  const form = document.getElementById('survey-form');
+  const fill = document.getElementById('progress-fill');
+  const txt = document.getElementById('progress-text');
+  const totalQ = 16;
+
+  function updateProgress() {
+    const answered = new Set();
+    form.querySelectorAll('input[type="radio"]:checked').forEach(r => answered.add(r.name));
+    form.querySelectorAll('textarea').forEach(t => { if(t.value.trim()) answered.add(t.name); });
+    const pct = Math.round((answered.size / totalQ) * 100);
+    fill.style.width = pct + '%';
+    txt.textContent = pct + '%';
+  }
+
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('input', updateProgress);
+
+  // Submit via Formspree
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = '⏳ جارٍ الإرسال...';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch('https://formspree.io/f/xwvwvzwo', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        document.querySelector('.hero').style.display = 'none';
+        const ty = document.getElementById('thankyou');
+        ty.classList.add('show');
+        fill.style.width = '100%';
+        txt.textContent = '100%';
+        window.scrollTo({top:0, behavior:'smooth'});
+      } else {
+        btn.textContent = '❌ حدث خطأ، حاول مجددًا';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      btn.textContent = '❌ تحقق من الاتصال وأعد المحاولة';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

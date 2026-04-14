@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استبيان نهاية العام - تكوين المعلمين 🎓</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --card: #1a1830;
+    --card2: #221f3a;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --text: #fffffe;
+    --muted: #a7a9be;
+    --border: rgba(255,255,255,0.08);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(77,150,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(199,125,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 10%, rgba(255,107,107,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+  .progress-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,14,23,0.92);
+    backdrop-filter: blur(12px);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    margin: 0 -16px 30px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent4), var(--accent5));
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .hero {
+    text-align: center;
+    padding: 40px 20px 30px;
+    margin-bottom: 30px;
+  }
+  .hero-emoji { font-size: 64px; display: block; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent2), var(--accent1), var(--accent5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,217,61,0.12);
+    border: 1px solid rgba(255,217,61,0.3);
+    color: var(--accent2);
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-teacher {
+    background: rgba(107,203,119,0.12);
+    border-color: rgba(107,203,119,0.3);
+    color: var(--accent3);
+  }
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 22px;
+    animation: slideIn 0.4s ease;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-title h2 { font-size: 18px; font-weight: 700; }
+  .section-title p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .question { margin-bottom: 28px; }
+  .question:last-child { margin-bottom: 0; }
+  .q-label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+  }
+  .q-num {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 1px 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .stars-wrap { display: flex; gap: 8px; flex-direction: row-reverse; justify-content: flex-end; }
+  .stars-wrap input { display: none; }
+  .stars-wrap label {
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+    filter: grayscale(1) opacity(0.4);
+  }
+  .stars-wrap input:checked ~ label,
+  .stars-wrap label:hover,
+  .stars-wrap label:hover ~ label {
+    filter: grayscale(0) opacity(1);
+    transform: scale(1.2);
+  }
+  .stars-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .options-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  .options-grid.two-col { grid-template-columns: 1fr 1fr; }
+  .options-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+  .opt-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .opt-label input { display: none; }
+  .opt-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .opt-text { position: relative; z-index: 1; line-height: 1.4; }
+  .opt-label:has(input:checked) {
+    border-color: var(--accent4);
+    background: rgba(77,150,255,0.12);
+  }
+  .opt-label:has(input:checked) .opt-dot {
+    background: var(--accent4);
+    border-color: var(--accent4);
+  }
+  .opt-label:has(input:checked) .opt-dot::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .opt-label:hover:not(:has(input:checked)) { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+  .fun-opt {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-size: 13px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .fun-opt input { display: none; }
+  .fun-opt .fun-emoji { font-size: 28px; }
+  .fun-opt:has(input:checked) { border-color: var(--accent2); background: rgba(255,217,61,0.1); color: var(--accent2); }
+  .fun-opt:hover:not(:has(input:checked)) { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+  textarea {
+    width: 100%;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    padding: 14px;
+    resize: vertical;
+    min-height: 90px;
+    transition: border-color 0.2s;
+    outline: none;
+    direction: rtl;
+  }
+  textarea:focus { border-color: var(--accent4); }
+  textarea::placeholder { color: var(--muted); }
+  .submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(77,150,255,0.3); }
+  .submit-btn:active { transform: translateY(0); }
+  .thankyou {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .thankyou.show { display: block; }
+  .thankyou-emoji { font-size: 80px; animation: pop 0.5s ease; display: block; }
+  @keyframes pop { 0%{transform:scale(0)} 80%{transform:scale(1.1)} 100%{transform:scale(1)} }
+  .thankyou h2 { font-size: 32px; font-weight: 900; margin: 20px 0 12px; background: linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .thankyou p { color: var(--muted); font-size: 15px; }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .s1 .section-icon { background: rgba(77,150,255,0.15); }
+  .s2 .section-icon { background: rgba(107,203,119,0.15); }
+  .s3 .section-icon { background: rgba(255,107,107,0.15); }
+  .s4 .section-icon { background: rgba(255,217,61,0.15); }
+  .s5 .section-icon { background: rgba(199,125,255,0.15); }
+  .s6 .section-icon { background: rgba(107,203,200,0.15); }
+  .checkbox-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+  }
+  .checkbox-label input { display: none; }
+  .checkbox-box {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .checkbox-label:has(input:checked) {
+    border-color: var(--accent3);
+    background: rgba(107,203,119,0.1);
+  }
+  .checkbox-label:has(input:checked) .checkbox-box {
+    background: var(--accent3);
+    border-color: var(--accent3);
+  }
+  .checkbox-label:has(input:checked) .checkbox-box::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+    font-weight: 900;
+  }
+  .nav-links {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .nav-link {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover {
+    background: var(--accent4);
+  }
+  @media(max-width:480px) {
+    .options-grid.two-col, .checkbox-grid { grid-template-columns: 1fr; }
+    .options-grid.three-col { grid-template-columns: 1fr 1fr; }
+    .section { padding: 20px 16px; }
+    .stars-wrap label { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="progress-bar-wrap">
+    <div class="progress-top">
+      <span>📋 استبيان نهاية العام</span>
+      <span id="progress-text">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <span class="hero-emoji">🎓</span>
+    <div class="badge">نهاية العام الدراسي</div>
+    <div class="badge badge-teacher">تكوين المعلمين</div>
+    <h1>استبيان الفوج — رأيك يهمّنا!</h1>
+    <p>هذا الاستبيان سرّي تمامًا 🔒 | خذ وقتك وكن صريحًا | لا توجد إجابات صحيحة أو خاطئة</p>
+    <div class="nav-links">
+      <a href="نتائج_الاستبيان.html" class="nav-link">📊 عرض النتائج</a>
+    </div>
+  </div>
+
+  <form id="survey-form">
+
+    <!-- Section 1: Professors -->
+    <div class="section s1">
+      <div class="section-title">
+        <div class="section-icon">👨‍🏫</div>
+        <div>
+          <h2>الأساتذة وطرق التدريس</h2>
+          <p>قيّم ما مررت به هذا العام</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">1</span> ما مدى رضاك العام عن أساتذة هذه السنة؟</div>
+        <div class="stars-wrap" data-name="q1">
+          <input type="radio" name="q1" id="q1s5" value="5"><label for="q1s5">⭐</label>
+          <input type="radio" name="q1" id="q1s4" value="4"><label for="q1s4">⭐</label>
+          <input type="radio" name="q1" id="q1s3" value="3"><label for="q1s3">⭐</label>
+          <input type="radio" name="q1" id="q1s2" value="2"><label for="q1s2">⭐</label>
+          <input type="radio" name="q1" id="q1s1" value="1"><label for="q1s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">2</span> هل كانت طرق التدريس المستخدمة مناسبة وفعّالة؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q2" value="نعم تمامًا"><span class="opt-dot"></span><span class="opt-text">✅ نعم، كانت ممتازة ومتنوعة</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="أحيانًا"><span class="opt-dot"></span><span class="opt-text">🔄 أحيانًا، حسب الأستاذ</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="نادرًا"><span class="opt-dot"></span><span class="opt-text">😐 نادرًا، كانت تقليدية جدًا</span></label>
+          <label class="opt-label"><input type="radio" name="q2" value="لا إطلاقًا"><span class="opt-dot"></span><span class="opt-text">❌ لا، نحتاج تجديدًا كاملًا</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">3</span> ما أكثر جانب أعجبك في أساليب التدريس؟ (اختر كل ما ينطبق)</div>
+        <div class="checkbox-grid">
+          <label class="checkbox-label"><input type="checkbox" name="q3a" value="الوضوح في الشرح"><span class="checkbox-box"></span>الوضوح في الشرح</label>
+          <label class="checkbox-label"><input type="checkbox" name="q3b" value="التشجيع على التفكير"><span class="checkbox-box"></span>التشجيع على التفكير</label>
+          <label class="checkbox-label"><input type="checkbox" name="q3c" value="استخدام التكنولوجيا"><span class="checkbox-box"></span>استخدام التكنولوجيا</label>
+          <label class="checkbox-label"><input type="checkbox" name="q3d" value="التعامل مع الطلاب"><span class="checkbox-box"></span>التعامل مع الطلاب</label>
+          <label class="checkbox-label"><input type="checkbox" name="q3e" value="التقييم العادل"><span class="checkbox-box"></span>التقييم العادل</label>
+          <label class="checkbox-label"><input type="checkbox" name="q3f" value="العمل الجماعي"><span class="checkbox-box"></span>العمل الجماعي</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">4</span> من أكثر أستاذ أثّر فيك إيجابيًا هذا العام؟ (اختياري)</div>
+        <textarea name="q4" placeholder="اكتب اسمه أو لقبه إن أردت... 🏆"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">5</span> كيف تقيّم استخدام الأساتذة للتقنيات الحديثة في التدريس؟</div>
+        <div class="stars-wrap" data-name="q5">
+          <input type="radio" name="q5" id="q5s5" value="5"><label for="q5s5">⭐</label>
+          <input type="radio" name="q5" id="q5s4" value="4"><label for="q5s4">⭐</label>
+          <input type="radio" name="q5" id="q5s3" value="3"><label for="q5s3">⭐</label>
+          <input type="radio" name="q5" id="q5s2" value="2"><label for="q5s2">⭐</label>
+          <input type="radio" name="q5" id="q5s1" value="1"><label for="q5s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">6</span> هل الأساتذة كانوا متاحين للمساعدة خارج أوقات المحاضرات؟</div>
+        <div class="options-grid two-col">
+          <label class="opt-label"><input type="radio" name="q6" value="نعم دائمًا"><span class="opt-dot"></span><span class="opt-text">👍 نعم دائمًا</span></label>
+          <label class="opt-label"><input type="radio" name="q6" value="أحيانًا"><span class="opt-dot"></span><span class="opt-text">🔄 أحيانًا</span></label>
+          <label class="opt-label"><input type="radio" name="q6" value="نادرًا"><span class="opt-dot"></span><span class="opt-text">😐 نادرًا</span></label>
+          <label class="opt-label"><input type="radio" name="q6" value="لا أبدًا"><span class="opt-dot"></span><span class="opt-text">❌ لا أبدًا</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Atmosphere -->
+    <div class="section s2">
+      <div class="section-title">
+        <div class="section-icon">🤝</div>
+        <div>
+          <h2>الجو الدراسي والعلاقات</h2>
+          <p>العلاقات داخل الفوج والمحيط الجامعي</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">7</span> كيف تصف جو الفوج خلال هذا العام؟</div>
+        <div class="options-grid two-col">
+          <label class="opt-label"><input type="radio" name="q7" value="ودّي ومتعاون"><span class="opt-dot"></span><span class="opt-text">🤗 ودّي ومتعاون</span></label>
+          <label class="opt-label"><input type="radio" name="q7" value="عادي"><span class="opt-dot"></span><span class="opt-text">😶 عادي، لا بأس</span></label>
+          <label class="opt-label"><input type="radio" name="q7" value="متوتر أحيانًا"><span class="opt-dot"></span><span class="opt-text">😬 متوتر أحيانًا</span></label>
+          <label class="opt-label"><input type="radio" name="q7" value="صعب"><span class="opt-dot"></span><span class="opt-text">😤 صعب وكثير مشاكل</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">8</span> ما مدى رضاك عن ممثل الفوج هذا العام؟</div>
+        <div class="stars-wrap" data-name="q8">
+          <input type="radio" name="q8" id="q8s5" value="5"><label for="q8s5">⭐</label>
+          <input type="radio" name="q8" id="q8s4" value="4"><label for="q8s4">⭐</label>
+          <input type="radio" name="q8" id="q8s3" value="3"><label for="q8s3">⭐</label>
+          <input type="radio" name="q8" id="q8s2" value="2"><label for="q8s2">⭐</label>
+          <input type="radio" name="q8" id="q8s1" value="1"><label for="q8s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">9</span> ما الذي يفتقده ممثل الفوج؟ (اختياري)</div>
+        <textarea name="q9" placeholder="مثلاً: التواصل، الجدية، الحضور... 🗣️"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">10</span> كيف تقيّم العلاقات بين زملاء الفوج؟</div>
+        <div class="stars-wrap" data-name="q10">
+          <input type="radio" name="q10" id="q10s5" value="5"><label for="q10s5">⭐</label>
+          <input type="radio" name="q10" id="q10s4" value="4"><label for="q10s4">⭐</label>
+          <input type="radio" name="q10" id="q10s3" value="3"><label for="q10s3">⭐</label>
+          <input type="radio" name="q10" id="q10s2" value="2"><label for="q10s2">⭐</label>
+          <input type="radio" name="q10" id="q10s1" value="1"><label for="q10s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">11</span> هل شاركت في أنشطة جماعية مع زملائك خارج المحاضرات؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q11" value="نعم كثيرًا"><span class="opt-dot"></span><span class="opt-text">🎉 نعم، كثيرًا</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="أحيانًا"><span class="opt-dot"></span><span class="opt-text">🔄 أحيانًا</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="نادرًا"><span class="opt-dot"></span><span class="opt-text">😔 نادرًا</span></label>
+          <label class="opt-label"><input type="radio" name="q11" value="لا أبدًا"><span class="opt-dot"></span><span class="opt-text">🚫 لا أبدًا</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Infrastructure -->
+    <div class="section s3">
+      <div class="section-title">
+        <div class="section-icon">🏛️</div>
+        <div>
+          <h2>البنية التحتية والإمكانيات</h2>
+          <p>المرافق، المكتبة، القاعات، الخدمات...</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">12</span> قيّم جودة القاعات والتجهيزات الدراسية</div>
+        <div class="stars-wrap" data-name="q12">
+          <input type="radio" name="q12" id="q12s5" value="5"><label for="q12s5">⭐</label>
+          <input type="radio" name="q12" id="q12s4" value="4"><label for="q12s4">⭐</label>
+          <input type="radio" name="q12" id="q12s3" value="3"><label for="q12s3">⭐</label>
+          <input type="radio" name="q12" id="q12s2" value="2"><label for="q12s2">⭐</label>
+          <input type="radio" name="q12" id="q12s1" value="1"><label for="q12s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">13</span> هل تتوفر الخدمات الأساسية بشكل مناسب؟</div>
+        <div class="checkbox-grid">
+          <label class="checkbox-label"><input type="checkbox" name="q13a" value="WiFi"><span class="checkbox-box"></span>WiFi</label>
+          <label class="checkbox-label"><input type="checkbox" name="q13b" value="مكتبة"><span class="checkbox-box"></span>مكتبة</label>
+          <label class="checkbox-label"><input type="checkbox" name="q13c" value="مطعم/كافتيريا"><span class="checkbox-box"></span>مطعم/كافتيريا</label>
+          <label class="checkbox-label"><input type="checkbox" name="q13d" value="مختبرات"><span class="checkbox-box"></span>مختبرات</label>
+          <label class="checkbox-label"><input type="checkbox" name="q13e" value="ماء باردة"><span class="checkbox-box"></span>ماء باردة</label>
+          <label class="checkbox-label"><input type="checkbox" name="q13f" value="مكيفات"><span class="checkbox-box"></span>مكيفات</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">14</span> ما أكبر مشكلة تتمنى حلّها السنة القادمة؟</div>
+        <textarea name="q14" placeholder="مكتبة، انقطاع الكهرباء، الإنترنت، النظافة... 🔧"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">15</span> كيف تقيّم المكتبة من حيث توفر المراجع والكتب؟</div>
+        <div class="stars-wrap" data-name="q15">
+          <input type="radio" name="q15" id="q15s5" value="5"><label for="q15s5">⭐</label>
+          <input type="radio" name="q15" id="q15s4" value="4"><label for="q15s4">⭐</label>
+          <input type="radio" name="q15" id="q15s3" value="3"><label for="q15s3">⭐</label>
+          <input type="radio" name="q15" id="q15s2" value="2"><label for="q15s2">⭐</label>
+          <input type="radio" name="q15" id="q15s1" value="1"><label for="q15s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">16</span> هل قاعات الدراسة مريحة ومناسبة للتركيز؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q16" value="نعم تمامًا"><span class="opt-dot"></span><span class="opt-text">✅ نعم تمامًا</span></label>
+          <label class="opt-label"><input type="radio" name="q16" value="مقبول"><span class="opt-dot"></span><span class="opt-text">⚖️ مقبول</span></label>
+          <label class="opt-label"><input type="radio" name="q16" value="تحتاج تحسين"><span class="opt-dot"></span><span class="opt-text">⚠️ تحتاج تحسين</span></label>
+          <label class="opt-label"><input type="radio" name="q16" value="سيئة"><span class="opt-dot"></span><span class="opt-text">❌ سيئة جدًا</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Teacher Training Specific -->
+    <div class="section s6">
+      <div class="section-title">
+        <div class="section-icon">📚</div>
+        <div>
+          <h2>تكوين المعلمين - تخصصيًا</h2>
+          <p>أسئلة خاصة ببرنامج تكوين المعلمين</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">17</span> كيف تقيّم تدريبك على الممارسة البيداغوجية؟</div>
+        <div class="stars-wrap" data-name="q17">
+          <input type="radio" name="q17" id="q17s5" value="5"><label for="q17s5">⭐</label>
+          <input type="radio" name="q17" id="q17s4" value="4"><label for="q17s4">⭐</label>
+          <input type="radio" name="q17" id="q17s3" value="3"><label for="q17s3">⭐</label>
+          <input type="radio" name="q17" id="q17s2" value="2"><label for="q17s2">⭐</label>
+          <input type="radio" name="q17" id="q17s1" value="1"><label for="q17s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">18</span> هل المواد البيداغوجية كانت مفيدة لإعدادك للمهنة؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q18" value="نعم جدًا"><span class="opt-dot"></span><span class="opt-text">✅ نعم جدًا ومفيدة</span></label>
+          <label class="opt-label"><input type="radio" name="q18" value="مفيد"><span class="opt-dot"></span><span class="opt-text">👍 مفيد إلى حد ما</span></label>
+          <label class="opt-label"><input type="radio" name="q18" value="عادي"><span class="opt-dot"></span><span class="opt-text">😐 عادي</span></label>
+          <label class="opt-label"><input type="radio" name="q18" value="غير مفيد"><span class="opt-dot"></span><span class="opt-text">❌ غير مفيد</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">19</span> ما رأيك في فترة التربص (العمل الميداني)؟</div>
+        <div class="stars-wrap" data-name="q19">
+          <input type="radio" name="q19" id="q19s5" value="5"><label for="q19s5">⭐</label>
+          <input type="radio" name="q19" id="q19s4" value="4"><label for="q19s4">⭐</label>
+          <input type="radio" name="q19" id="q19s3" value="3"><label for="q19s3">⭐</label>
+          <input type="radio" name="q19" id="q19s2" value="2"><label for="q19s2">⭐</label>
+          <input type="radio" name="q19" id="q19s1" value="1"><label for="q19s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>ممتاز 🌟</span><span>ضعيف 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">20</span> هل تشعر أن التكوين أعددك بشكل كافٍ للمهنة؟</div>
+        <div class="options-grid">
+          <label class="opt-label"><input type="radio" name="q20" value="نعم تمامًا"><span class="opt-dot"></span><span class="opt-text">✅ نعم تمامًا</span></label>
+          <label class="opt-label"><input type="radio" name="q20" value="إلى حد ما"><span class="opt-dot"></span><span class="opt-text">⚖️ إلى حد ما</span></label>
+          <label class="opt-label"><input type="radio" name="q20" value="غير كافٍ"><span class="opt-dot"></span><span class="opt-text">⚠️ غير كافٍ</span></label>
+          <label class="opt-label"><input type="radio" name="q20" value="لا إطلاقًا"><span class="opt-dot"></span><span class="opt-text">❌ لا إطلاقًا</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">21</span> ما أكثر مادة أو وحدة دراسية وجدت فيها صعوبة؟ (اختياري)</div>
+        <textarea name="q21" placeholder="اذكر المادة والسبب... 📖"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">22</span> هل المواد المشتركة (مثل الرياضيات، اللغة...) كانت بمستوى مناسب؟</div>
+        <div class="options-grid two-col">
+          <label class="opt-label"><input type="radio" name="q22" value="نعم"><span class="opt-dot"></span><span class="opt-text">✅ نعم</span></label>
+          <label class="opt-label"><input type="radio" name="q22" value="لا"><span class="opt-dot"></span><span class="opt-text">❌ لا</span></label>
+          <label class="opt-label"><input type="radio" name="q22" value="كانت صعبة"><span class="opt-dot"></span><span class="opt-text">😰 كانت صعبة</span></label>
+          <label class="opt-label"><input type="radio" name="q22" value="كانت سهلة"><span class="opt-dot"></span><span class="opt-text">😴 كانت سهلة جدًا</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Fun Questions -->
+    <div class="section s4">
+      <div class="section-title">
+        <div class="section-icon">🎉</div>
+        <div>
+          <h2>أسئلة ترفيهية 😄</h2>
+          <p>استرخِ وأجب بصدق تام!</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">23</span> 🔥 لو اضطررت للاختيار... ماذا تختار؟</div>
+        <div class="options-grid two-col">
+          <label class="fun-opt"><input type="radio" name="q23" value="مليون دولار"><span class="fun-emoji">💰</span>مليون دولار</label>
+          <label class="fun-opt"><input type="radio" name="q23" value="فوجك"><span class="fun-emoji">👨‍👩‍👧‍👦</span>فوجك وزملاؤك</label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">27</span> 😂 ما أغرب موقف مررت به هذا العام في المدرسة؟</div>
+        <textarea name="q27" placeholder="انسى الرسمية واحكيلنا! 😄"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">28</span> 🚀 لو كنت مديرًا للمدرسة ليوم واحد، ماذا ستغيّر؟</div>
+        <textarea name="q28" placeholder="لا حدود للخيال! 🌟"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">29</span> 🏅 من يستحق لقب «شخصية العام» في الفوج؟ ولماذا؟</div>
+        <textarea name="q29" placeholder="اذكر الاسم والسبب إن أردت 😄"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">31</span> 🌟 ما أكثر شيء ستشتاق له من هذا العام؟</div>
+        <textarea name="q31" placeholder="ذكرى، صديق، نشاط، مادة... 💭"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 6: Final -->
+    <div class="section s5">
+      <div class="section-title">
+        <div class="section-icon">💬</div>
+        <div>
+          <h2>الكلمة الأخيرة</h2>
+          <p>رسالتك لزملائك ولإدارة المدرسة</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">32</span> كيف تقيّم هذا العام الدراسي بشكل عام؟</div>
+        <div class="stars-wrap" data-name="q32">
+          <input type="radio" name="q32" id="q32s5" value="5"><label for="q32s5">⭐</label>
+          <input type="radio" name="q32" id="q32s4" value="4"><label for="q32s4">⭐</label>
+          <input type="radio" name="q32" id="q32s3" value="3"><label for="q32s3">⭐</label>
+          <input type="radio" name="q32" id="q32s2" value="2"><label for="q32s2">⭐</label>
+          <input type="radio" name="q32" id="q32s1" value="1"><label for="q32s1">⭐</label>
+        </div>
+        <div class="stars-labels"><span>عام رائع 🌟</span><span>عام صعب 😞</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">33</span> رسالة أو نصيحة للإدارة لتحسين العام القادم... 📋</div>
+        <textarea name="q34" placeholder="ما الذي تريد أن يتغير؟ 🏫"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="question">
+        <div class="q-label"><span class="q-num">34</span> رسالة لزملائك في نهاية العام... ✍️</div>
+        <textarea name="q33" placeholder="قُلها من القلب 💙" style="min-height:110px"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">🚀 إرسال الاستبيان</button>
+  </form>
+
+  <div class="thankyou" id="thankyou">
+    <span class="thankyou-emoji">🎊</span>
+    <h2>شكرًا جزيلًا!</h2>
+    <p>تمّ تسجيل إجاباتك بنجاح 🎉<br>رأيك يساهم في تطوير بيئتنا الدراسية<br><br>الإجابات محفوظة محليًا في المتصفح<br><br>نتمنى لك صيفًا جميلًا وعطلة مريحة ☀️</p>
+    <div class="nav-links" style="margin-top: 20px;">
+      <a href="نتائج_الاستبيان.html" class="nav-link">📊 عرض النتائج</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('survey-form');
+  const fill = document.getElementById('progress-fill');
+  const txt = document.getElementById('progress-text');
+  const totalQ = 29;
+
+  function updateProgress() {
+    const answered = new Set();
+    form.querySelectorAll('input[type="radio"]:checked').forEach(r => answered.add(r.name));
+    form.querySelectorAll('textarea').forEach(t => { if(t.value.trim()) answered.add(t.name); });
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach(c => answered.add(c.name));
+    const pct = Math.round((answered.size / totalQ) * 100);
+    fill.style.width = pct + '%';
+    txt.textContent = pct + '%';
+  }
+
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('input', updateProgress);
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = '⏳ جارٍ الإرسال...';
+    btn.disabled = true;
+
+    // Build formatted message for email
+    let message = '📊 استبيان جديد - تكوين المعلمين\n';
+    message += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    message += `📅 التاريخ: ${new Date().toLocaleString('ar-DZ')}\n\n`;
+
+    // Collect and format answers
+    const answers = {};
+
+    // Radio buttons
+    form.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+      answers[input.name] = input.value;
+    });
+
+    // Checkboxes
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach(input => {
+      if (!answers[input.name]) answers[input.name] = [];
+      if (Array.isArray(answers[input.name])) {
+        answers[input.name].push(input.value);
+      }
+    });
+
+    // Textareas
+    form.querySelectorAll('textarea').forEach(ta => {
+      if (ta.value.trim()) answers[ta.name] = ta.value;
+    });
+
+    // Format message
+    const questionLabels = {
+      'q1': 'تقييم الأساتذة',
+      'q2': 'طرق التدريس',
+      'q3a': 'الوضوح في الشرح',
+      'q3b': 'التشجيع على التفكير',
+      'q3c': 'استخدام التكنولوجيا',
+      'q3d': 'التعامل مع الطلاب',
+      'q3e': 'التقييم العادل',
+      'q3f': 'العمل الجماعي',
+      'q4': 'أفضل أستاذ',
+      'q5': 'استخدام التقنيات الحديثة',
+      'q6': 'توفر الأساتذة',
+      'q7': 'جو الفوج',
+      'q8': 'تقييم ممثل الفوج',
+      'q9': 'ما ينقص ممثل الفوج',
+      'q10': 'العلاقات بين الزملاء',
+      'q11': 'أنشطة جماعية',
+      'q12': 'جودة القاعات',
+      'q13a': 'WiFi',
+      'q13b': 'مكتبة',
+      'q13c': 'مطعم/كافتيريا',
+      'q13d': 'مختبرات',
+      'q13e': 'ماء باردة',
+      'q13f': 'مكيفات',
+      'q14': 'أبرز مشكلة',
+      'q15': 'تقييم المكتبة',
+      'q16': 'قاعات الدراسة',
+      'q17': 'الممارسة البيداغوجية',
+      'q18': 'المواد البيداغوجية',
+      'q19': 'فترة التربص',
+      'q20': 'الاستعداد للمهنة',
+      'q21': 'صعوبة في مادة',
+      'q22': 'المواد المشتركة',
+      'q23': 'مليون دولار أم فوجك',
+      'q27': 'أغرب موقف',
+      'q28': 'لو كنت مديرًا',
+      'q29': 'شخصية العام',
+      'q31': 'ما ستشتاق له',
+      'q32': 'التقييم العام',
+      'q33': 'رسالة للزملاء',
+      'q34': 'نصيحة للإدارة'
+    };
+
+    // Group answers by category
+    message += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    message += '📋 إجابات الاستبيان:\n\n';
+
+    // Teaching section
+    message += '👨‍🏫 الأساتذة وطرق التدريس:\n';
+    ['q1', 'q2', 'q3a', 'q3b', 'q3c', 'q3d', 'q3e', 'q3f', 'q4', 'q5', 'q6'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n🤝 الجو الدراسي والعلاقات:\n';
+    ['q7', 'q8', 'q9', 'q10', 'q11'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n🏛️ البنية التحتية:\n';
+    ['q12', 'q13a', 'q13b', 'q13c', 'q13d', 'q13e', 'q13f', 'q14', 'q15', 'q16'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n📚 تكوين المعلمين:\n';
+    ['q17', 'q18', 'q19', 'q20', 'q21', 'q22'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n🎉 أسئلة ترفيهية:\n';
+    ['q23', 'q27', 'q28', 'q29', 'q31'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n💬 الكلمة الأخيرة:\n';
+    ['q32', 'q34', 'q33'].forEach(q => {
+      if (answers[q]) {
+        message += `• ${questionLabels[q]}: ${Array.isArray(answers[q]) ? answers[q].join(', ') : answers[q]}\n`;
+      }
+    });
+
+    message += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    message += '📨 تم الإرسال من: استبيان نهاية العام - تكوين المعلمين';
+
+    // Save to localStorage for results page
+    const existingResponses = JSON.parse(localStorage.getItem('surveyResponses') || '[]');
+    answers.timestamp = new Date().toISOString();
+    existingResponses.push(answers);
+    localStorage.setItem('surveyResponses', JSON.stringify(existingResponses));
+
+    // Show success message
+    form.style.display = 'none';
+    document.querySelector('.hero').style.display = 'none';
+    const ty = document.getElementById('thankyou');
+    ty.classList.add('show');
+    fill.style.width = '100%';
+    txt.textContent = '100%';
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
